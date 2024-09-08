@@ -1,0 +1,88 @@
+import tkinter as tk
+from tkinter import filedialog
+import pygame
+from PIL import Image, ImageTk
+import time
+from tkinter import messagebox
+# تابع برای پیش فرض
+def play_ph ():
+    try:
+        pygame.mixer.music.load('ahang.mp3')
+        pygame.mixer.music.play()
+        str = int
+    except Exception as e :
+        messagebox.showerror('error',f'failed to play music {e}')  
+# راه اندازی pygame
+pygame.mixer.init()
+#تابع برای تنطیم ولوم
+def set_volume(value):
+    volume = float(value) / 100
+    pygame.mixer.music.set_volume(volume)
+
+# تابع برای بارگذاری موزیک
+def load_music():
+    file_path = filedialog.askopenfilename(filetypes=[("Audio Files", "*.mp3 *.wav")])
+    if file_path:                                    
+        pygame.mixer.music.load(file_path)
+        status_label.config(text=f"open file: {file_path.split('/')[-1]}")
+# تابع برای پخش موزیک
+def play_music():
+    pygame.mixer.music.play()
+    status_label.config(text="now is playing ...")
+
+# تابع برای توقف موزیک
+def stop_music():
+    pygame.mixer.music.stop()
+    status_label.config(text="stop")
+
+# تابع برای توقف موزیک
+def pause_music():
+    pygame.mixer.music.pause()
+    status_label.config(text=" stop music")
+
+# تابع برای ادامه پخش موزیک
+def unpause_music():
+    pygame.mixer.music.unpause()
+    status_label.config(text="continue ...")
+
+def exit9 ():
+    quit()    
+# ایجاد پنجره اصلی
+root = tk.Tk()
+root.title("mmd player")
+play_ph()
+root.geometry('380x450')
+photo=tk.PhotoImage(file = 'logo.png')
+root.wm_iconphoto(False, photo)
+back_image = tk.PhotoImage(file='logo.png')
+back_image_lable = tk.Label(root,image=back_image)
+back_image_lable.place(x=0,y=0,relwidth=1,relheight=1)
+volume_lable = tk.Label(text = 'volume' , bg='#d1aded')
+volume_lable.pack(pady=10)
+volume_slider = tk.Scale(root , from_= 0 , to = 100 , orient=tk.HORIZONTAL , command=set_volume , bg='lightblue')
+volume_slider.set(50)
+volume_slider.pack(pady=10)
+# ایجاد دکمه‌ها
+load_button = tk.Button(root, text="open file", command=load_music , bg='#7476fc')
+load_button.pack(pady=10)
+
+play_button = tk.Button(root, text="play", command=play_music , bg ='#b21c11')
+play_button.pack(pady=10)
+
+pause_button = tk.Button(root, text="stop", command=pause_music , bg='#12b0bb')
+pause_button.pack(pady=10)
+
+unpause_button = tk.Button(root, text="cotinue", command=unpause_music , bg='#663399')
+unpause_button.pack(pady=10)
+
+stop_button = tk.Button(root, text="stop music", command=stop_music , bg='#008000')
+stop_button.pack(pady=10)
+
+exit_button = tk.Button(root,text='Exit' , command=exit9 , bg='red')
+exit_button.pack(pady=10)
+# برچسب وضعیت
+status_label = tk.Label(root, text="now is playing ...." , bg='#B0C4DE')
+status_label.pack(pady=20)
+image = open('im.png')
+# اجرای حلقه اصلی
+root.mainloop()
